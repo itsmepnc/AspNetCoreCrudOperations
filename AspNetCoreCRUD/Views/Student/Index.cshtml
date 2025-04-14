@@ -1,0 +1,123 @@
+﻿@model AspNetCoreCRUD.Models.ViewModels.StudentRegistrationDto
+@{
+    ViewData["Title"] = "Student";
+}
+
+<style>
+    .table-primary{
+        background-color: blue;
+    }
+</style>
+
+@if (TempData["Message"] != null)
+{
+    <div class="d-flex justify-content-sm-right justify-content-md-center justify-content-lg-end">
+        <span class="text-danger fw-bold">
+            @TempData["Message"]
+        </span>
+    </div>
+}
+
+<div class="card mt-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Register Student</h5>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("CreateStudent", "Student", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+        {
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter First Name" })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Dob, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Dob, "{0:dd-MM-yyyy}", new
+                        {
+                            @class = "form-control",
+                            type = "date",
+                            min = "1950-01-01",
+                            max = "2100-12-31"
+                        })
+
+                    @Html.ValidationMessageFor(m => m.Dob, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Gender, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female"}), "Select Gender", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Fee, htmlAttributes: new { @class = "form-label" })
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        @Html.TextBoxFor(m => m.Fee," ", new { @class = "form-control", type = "number", placeholder = "Enter Fee Amount" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Fee, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-success">Submit</button>
+        }
+    </div>
+</div>
+
+<div class="table-responsive mt-4 p-3">
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Sl.No</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Fee</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.studentRegistrationList.Any())
+            {
+                var count = 1;
+                foreach (var student in Model.studentRegistrationList)
+                {
+                    <tr>
+                        <td>@count</td>
+                        <td>@student.FirstName</td>
+                        <td>@student.LastName</td>
+                        <td>@student.Dob.ToString("yyyy-MM-dd")</td>
+                        <td>@student.Gender</td>
+                        <td>₹@String.Format("{0:N0}", student.Fee)</td>
+                        <td>
+                            <a asp-action="EditStudent" asp-route-id="@student.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                            <a asp-action="ViewStudent" asp-route-id="@student.Id" class="btn btn-sm btn-info text-white">View</a>
+                            <a asp-action="RemoveStudent" asp-route-id="@student.Id" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    count++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

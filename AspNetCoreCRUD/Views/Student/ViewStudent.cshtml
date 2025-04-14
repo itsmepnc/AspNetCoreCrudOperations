@@ -1,0 +1,29 @@
+﻿@model AspNetCoreCRUD.Models.ViewModels.StudentRegistrationDto
+@{
+    ViewData["Title"] = "View Student";
+}
+
+<h4>Student Details</h4>
+
+<div class="card mt-3 shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+
+            <dt class="col-sm-3">DOB</dt>
+            <dd class="col-sm-9">@Model.Dob.ToString("yyyy-MM-dd")</dd>
+
+            <dt class="col-sm-3">Gender</dt>
+            <dd class="col-sm-9">@Model.Gender</dd>
+
+            <dt class="col-sm-3">Fee</dt>
+            <dd class="col-sm-9">₹@string.Format("{0:N0}", Model.Fee)</dd>
+        </dl>
+
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </div>
+</div>

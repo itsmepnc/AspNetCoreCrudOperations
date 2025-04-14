@@ -1,0 +1,53 @@
+﻿@model AspNetCoreCRUD.Models.ViewModels.StudentRegistrationDto
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<h4>Edit Student</h4>
+
+<div class="card mt-3 shadow-sm">
+    <div class="card-body">
+        @using (Html.BeginForm("EditStudent", "Student", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.Id)
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.FirstName)
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.LastName)
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Dob)
+                    @Html.TextBoxFor(m => m.Dob, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.Dob, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Gender)
+                    @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }, Model.Gender), "Select Gender", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(m => m.Fee)
+                <div class="input-group">
+                    <span class="input-group-text">₹</span>
+                    @Html.TextBoxFor(m => m.Fee, new { @class = "form-control", type = "number" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Fee, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        }
+    </div>
+</div>
